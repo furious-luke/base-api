@@ -15,7 +15,7 @@ def parse_version():
 
 
 setup(
-    name='base-api',
+    name='baseapi',
     version=parse_version(),
     author='Luke Hodkinson',
     author_email='furious.luke@gmail.com',

@@ -9,8 +9,9 @@ class Client:
     DEFAULT_URL = None
     DEFAULT_APIS = ()
 
-    def __init__(self, url=None, jwt=None, session=None):
+    def __init__(self, url=None, jwt=None, session=None, debug=False):
         self.url = url or self.DEFAULT_URL
+        self.debug = debug
         self.jwt = jwt
         self.apis = []
         self.headers = {}
@@ -18,7 +19,6 @@ class Client:
         self.load_apis()
         if self.session:
             self.session.load(self)
-        self.debug = False
 
     def load_apis(self):
         for api_name in self.DEFAULT_APIS:

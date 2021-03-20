@@ -14,7 +14,7 @@ separate, hopefully making for an easier maintenance experience.
 PyPi is the easiest way to install:
 
 ``` bash
-pip install base-api
+pip install baseapi
 ```
 
 ## Usage
