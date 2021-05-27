@@ -17,7 +17,11 @@ class RestApi(Api):
         'delete',
         'options',
         'perform_request',
+        'urlencode',
+        'signed',
     ])
+
+    signature = None
 
     def get(self, path, data=None, headers=None):
         return self.perform_request('get', path, data=data, headers=headers)
@@ -54,12 +58,14 @@ class RestApi(Api):
             print('  Data:')
             print(f'    {json.dumps(data, indent=6)}')
         if method == 'get':
-            url = f'{url}?{urlencode(data)}'
+            if data:
+                url = self.urlencode(url, data)
             data = None
         response = getattr(requests, method)(
             url,
-            json=data,
+            data=_dump_data(data),
             headers=headers,
+            auth=self.signature,
         )
         if response.status_code not in self.SUCCESS_RESPONSE_CODES:
             msg = response.content
@@ -71,3 +77,12 @@ class RestApi(Api):
             )
         response_data = response.json()
         return response_data
+
+    def urlencode(self, url, data):
+        return f'{url}?{urlencode(data)}'
+
+
+def _dump_data(data):
+    if data is None:
+        return None
+    return json.dumps(data, separators=(',', ':'))
