@@ -33,17 +33,17 @@ setup(
         'Operating System :: OS Independent',
         'Programming Language :: Python',
         'Programming Language :: Python :: 3.5',
-        'License :: OSI Approved :: MIT License'
+        'License :: OSI Approved :: MIT License',
     ],
     packages=find_packages(exclude=['tests']),
     include_package_data=True,
     package_data={'': ['*.txt', '*.js', '*.html', '*.*']},
     install_requires=[
-        'requests'
+        'requests',
     ],
     extras_require={
     },
     entry_points={
     },
-    zip_safe=True
+    zip_safe=True,
 )
