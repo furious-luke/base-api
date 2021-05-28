@@ -9,9 +9,10 @@ class Client:
     DEFAULT_URL = None
     DEFAULT_APIS = ()
 
-    def __init__(self, url=None, jwt=None, session=None):
+    def __init__(self, url=None, jwt=None, auth=None, session=None):
         self.url = url or self.DEFAULT_URL
         self.jwt = jwt
+        self.auth = auth
         self.apis = []
         self.headers = {}
         self.session = session
@@ -47,6 +48,11 @@ class Client:
 
     def set_jwt(self, jwt):
         self.jwt = jwt
+        if self.session:
+            self.session.save(self)
+
+    def set_auth(self, auth):
+        self.auth = auth
         if self.session:
             self.session.save(self)
 

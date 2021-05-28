@@ -47,6 +47,8 @@ class RestApi(Api):
         auth_headers = {}
         if self.client.jwt:
             auth_headers['Authorization'] = f'Bearer {self.client.jwt}'
+        elif self.client.auth:
+            auth_headers['Authorization'] = f'Basic {self.client.auth}'
         headers = {
             **auth_headers,
             **merge_headers(self.client.headers, headers),
@@ -65,12 +67,15 @@ class RestApi(Api):
             url,
             data=_dump_data(data),
             headers=headers,
-            auth=self.signature,
+            # auth=self.signature,
         )
         if response.status_code not in self.SUCCESS_RESPONSE_CODES:
-            msg = response.content
+            msg = response.content.decode()
+            error_msg = f'API error: {response.status_code}'
+            if msg:
+                error_msg += f'- {msg}'
             raise QueryException(
-                f'API error: {msg}',
+                error_msg,
                 status_code=response.status_code,
                 body=response.content,
                 headers=response.headers,
